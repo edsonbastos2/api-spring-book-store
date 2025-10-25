@@ -1,5 +1,6 @@
 package com.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,6 +17,11 @@ public class ReviewEntity implements Serializable {
 
     @Column(name = "name", nullable = false)
     private String comment;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToOne
+    @JoinColumn(name = "id_book")
+    private BookEntity book;
 
     public ReviewEntity() {
     }
@@ -34,5 +40,13 @@ public class ReviewEntity implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public BookEntity getBook() {
+        return book;
+    }
+
+    public void setBook(BookEntity book) {
+        this.book = book;
     }
 }
