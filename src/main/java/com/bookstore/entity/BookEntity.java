@@ -1,5 +1,6 @@
 package com.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,11 +20,13 @@ public class BookEntity implements Serializable {
     @Column(name = "book_title", nullable = false, unique = true)
     private String title;
 
-    @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private PublisherEntity publisher;
 
-    @ManyToMany
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "tb_book_author",
             joinColumns = @JoinColumn(name = "id_book"),
@@ -50,14 +53,6 @@ public class BookEntity implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public PublisherEntity getPublisherEntity() {
-        return publisher;
-    }
-
-    public void setPublisherEntity(PublisherEntity publisher) {
-        this.publisher = publisher;
     }
 
     public Set<AuthorEntity> getAuthors() {
